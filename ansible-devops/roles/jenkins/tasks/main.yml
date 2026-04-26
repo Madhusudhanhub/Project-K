@@ -1,0 +1,23 @@
+# roles/jenkins/tasks/main.yml
+
+- name: Pull Jenkins image
+  docker_container:
+    name: jenkins
+    image: jenkins/jenkins:lts
+    state: started
+    restart_policy: always
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+
+- name: Wait for Jenkins to start
+  wait_for:
+    port: 8080
+    delay: 10
+    timeout: 120
+
+- name: Show Jenkins URL
+  debug:
+    msg: "Jenkins is running at http://<EC2-IP>:8080"

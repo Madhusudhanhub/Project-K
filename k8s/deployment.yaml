@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: madhu-app-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: madhu-app
+  template:
+    metadata:
+      labels:
+        app: madhu-app
+    spec:
+      containers:
+      - name: madhu-app
+        image: 125903111220.dkr.ecr.us-east-1.amazonaws.com/madhu-app:latest
+        ports:
+        - containerPort: 5000

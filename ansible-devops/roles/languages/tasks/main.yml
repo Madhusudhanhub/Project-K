@@ -1,0 +1,23 @@
+# roles/languages/tasks/main.yml
+- name: Install Python
+  apt:
+    name: python3
+    state: present
+
+- name: Install pip
+  apt:
+    name: python3-pip
+    state: present
+
+- name: Install Golang
+  apt:
+    name: golang
+    state: present
+
+- name: Verify Go
+  command: go version
+  register: go_output
+  ignore_errors: yes
+
+- debug:
+    var: go_output.stdout

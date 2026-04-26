@@ -1,0 +1,13 @@
+- name: Update apt cache safely
+  apt:
+    update_cache: yes
+  ignore_errors: yes
+
+- name: Install base packages
+  apt:
+    name:
+      - git
+      - curl
+      - unzip
+      - wget
+    state: present

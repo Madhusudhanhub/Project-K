@@ -1,0 +1,38 @@
+- name: Setup DevOps Stack (Self-Healing)
+  hosts: all
+  become: yes
+
+  pre_tasks:
+
+    - name: Remove broken Jenkins repo if exists
+      file:
+        path: /etc/apt/sources.list.d/jenkins.list
+        state: absent
+
+    - name: Remove old Jenkins keys
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - /etc/apt/keyrings/jenkins.gpg
+        - /usr/share/keyrings/jenkins.gpg
+
+    - name: Clean apt cache
+      shell: |
+        apt-get clean
+        rm -rf /var/lib/apt/lists/*
+      ignore_errors: yes
+
+    - name: Update apt cache safely
+      apt:
+        update_cache: yes
+      ignore_errors: yes
+
+  roles:
+    - common
+    - docker
+    - kubernetes
+    - terraform
+    - jenkins
+    - monitoring
+    - languages

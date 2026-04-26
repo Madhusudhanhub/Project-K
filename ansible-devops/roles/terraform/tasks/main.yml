@@ -1,0 +1,19 @@
+# roles/terraform/tasks/main.yml
+- name: Download Terraform
+  get_url:
+    url: https://releases.hashicorp.com/terraform/1.7.5/terraform_1.7.5_linux_amd64.zip
+    dest: /tmp/terraform.zip
+
+- name: Unzip Terraform
+  unarchive:
+    src: /tmp/terraform.zip
+    dest: /usr/local/bin/
+    remote_src: yes
+
+- name: Verify Terraform
+  command: terraform -version
+  register: tf_output
+  ignore_errors: yes
+
+- debug:
+    var: tf_output.stdout
